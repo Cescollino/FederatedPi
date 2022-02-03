@@ -1,5 +1,4 @@
-pytorch
-torchvision
+torch
 numpy
 tensorboardx
 matplotlib
