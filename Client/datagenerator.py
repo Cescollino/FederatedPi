@@ -10,3 +10,26 @@
     #personne âgée : 65 ± 5
 
 #We will generate values based on the age of subjects and a gaussian normal distribution
+from faker import Faker
+from faker.providers import BaseProvider
+import random
+import csv
+
+
+def get_age():
+    return  random.randrange(0, 100)
+       
+def get_Temp():
+     return round(random.uniform(20.0, 42.0), 1)
+def get_HR():
+    return  random.randrange(50, 160)
+
+
+def generate_DATA():
+    return [get_age(), get_Temp(), get_HR()]
+
+with open('Data.csv', 'w') as csvfile:
+    writer = csv.writer(csvfile)
+    writer.writerow(['Age', 'Temperature', 'Heart rate'])
+    for n in range(1, 100):
+        writer.writerow(generate_DATA())
