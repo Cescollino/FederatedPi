@@ -45,6 +45,14 @@ worker1 = sy.VirtualWorker(hook=hook,id='worker1')
 # create a machine owned by worker2
 worker2 = sy.VirtualWorker(hook=hook,id='worker2')
 
+
+#### transform data from csv numpy ndarray
+import csv
+data = []
+with open('data.csv', 'r') as csvfile:
+       reader = csv.reader(csvfile)
+       for row in reader:
+           data.append([int(val) for val in row])
 ### learning task parameters
 class Arguments():
     def __init__(self):
@@ -69,7 +77,7 @@ device = torch.device("cuda" if use_cuda else "cpu")
 kwargs = {'num_workers': 1, 'pin_memory': True} if use_cuda else {}
 ####### data loading and sending to workers
 federated_train_loader = sy.FederatedDataLoader( # <-- this is now a FederatedDataLoader 
-    datasets.MNIST('../data.csv', train=True, download=True,
+    datasets.MNIST('../data', train=True, download=True,
                    transform=transforms.Compose([
                        transforms.ToTensor(),
                        transforms.Normalize((0.1307,), (0.3081,))
@@ -78,7 +86,7 @@ federated_train_loader = sy.FederatedDataLoader( # <-- this is now a FederatedDa
     batch_size=args.batch_size, shuffle=True, **kwargs)
 
 test_loader = torch.utils.data.DataLoader(
-    datasets.MNIST('../data.csv', train=False, transform=transforms.Compose([
+    datasets.MNIST('../data', train=False, transform=transforms.Compose([
                        transforms.ToTensor(),
                        transforms.Normalize((0.1307,), (0.3081,))
                    ])),
@@ -131,3 +139,7 @@ for epoch in range(1, args.epochs + 1):
 
 if (args.save_model):
     torch.save(model.state_dict(), "mnist_cnn.pt")
+
+
+
+  
