@@ -17,7 +17,8 @@ from options import args_parser
 from update import LocalUpdate, test_inference
 from utils import get_dataset, average_weights, exp_details
 
-from torch import nnclass Network(nn.Module):
+from torch import nn
+class Network(nn.Module):
 
     def __init__(self):
         super().__init__()
@@ -27,13 +28,13 @@ from torch import nnclass Network(nn.Module):
         # Output layer, 10 units - one for each digit
         self.output = nn.Linear(5, 2)
         # Define sigmoid activation and softmax output
-        self.sigmoid = nn.Sigmoid()
+        self.ReLU = nn.ReLU()
         self.softmax = nn.Softmax(dim=1)
 
     def forward(self, x):
         # Pass the input tensor through each of our operations
         x = self.hidden(x)
-        x = self.sigmoid(x)
+        x = self.ReLU(x)
         x = self.output(x)
         x = self.softmax(x)
 
