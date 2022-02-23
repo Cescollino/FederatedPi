@@ -14,14 +14,43 @@
 #from faker.providers import BaseProvider
 import random
 import csv
-
+import matplotlib
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.cbook as cbook
 
 def get_age():
     return  random.randrange(0, 100)
+
 def get_Temp():
-     return round(random.uniform(20.0, 42.0), 1)
-def get_HR():
-    return  random.randrange(50, 160)
+    mu= 37
+    sigma= 1
+
+    return round(random.gauss(mu,sigma), 1)
+
+def get_HR(age):
+
+    if age<1:
+        mu= 140
+        sigma= 50
+    elif age<3:
+        mu= 110
+        sigma= 40
+    elif age<5:
+        mu= 105
+        sigma= 35
+    elif age<12:
+        mu= 95
+        sigma= 30
+    elif age<65:
+        mu= 70
+        sigma= 10
+    else:
+        mu= 65
+        sigma= 5
+
+    return round(random.gauss(mu,sigma), 1)
 
 def get_Label(age, temp, hr):
     label=0
@@ -54,12 +83,16 @@ def get_Label(age, temp, hr):
 def generate_DATA():
     a=get_age();
     b=get_Temp();
-    c=get_HR();
+    c=get_HR(a);
     d=get_Label(a,b,c);
     return [a,b,c,d]
 
 with open('Data.csv', 'w') as csvfile:
     writer = csv.writer(csvfile)
-    writer.writerow(['Age', 'Temperature', 'Heart rate'])
+    writer.writerow(['Age', 'Temperature', 'Heart rate', 'Label'])
     for n in range(1, 300):
         writer.writerow(generate_DATA())
+
+msft = pd.read_csv('Data.csv')
+#print(msft)
+msft.plot(kind='bar',x='Age',y='Label')
