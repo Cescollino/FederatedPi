@@ -20,6 +20,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.cbook as cbook
 
+
 def get_age():
     return  random.randrange(0, 100)
 
@@ -93,6 +94,8 @@ with open('Data.csv', 'w') as csvfile:
     for n in range(1, 300):
         writer.writerow(generate_DATA())
 
-msft = pd.read_csv('Data.csv')
+dataset = np.loadtxt(open("Data.csv", "rb"), delimiter=",", skiprows=1)
+
+#msft = pd.read_csv('Data.csv')
 #print(msft)
-msft.plot(kind='bar',x='Age',y='Label')
+#msft.plot(kind='bar',x='Age',y='Label')
